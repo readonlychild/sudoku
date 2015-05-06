@@ -1,0 +1,153 @@
+<html>
+<head>
+  <title>SudoKu</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+  <link rel="stylesheet" href="css/bootstrap-switch.min.css" />
+  <style>
+  body, * { font-family:arial; }
+  body { padding:60px 0 10px; }
+  #sudoku table td { border:1px solid #ccc; padding:4px; cursor:pointer; min-width:28px; height:32px; text-align:center; }
+  #sudoku table td.active { border:1px solid #f72; }
+  #sudoku table td.alt { background:#eee; }
+  #sudoku table td.crosshair { border:1px solid #999; }
+  #sudoku table td.ok { background:#cfc; }
+  #sudoku table td.ng { background:#fcc; }
+  #sudoku table td.block-ng { background:#fdd; }
+  #sudoku table td.locked { font-weight:bold; color:#f00; }
+  #sudoku table td.alt.block-ng { background:#fcc; }
+  #sudo-message.showing { padding:8px; border:1px solid #ddd; text-align:center; font-weight:bold; background:#bce; }
+  .button-row { padding: 2px; margin:2px; border:0px solid #ccc; text-align:center; }
+  .sudo-grid { margin:0 auto; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-th"></span>SuDoKu</a>
+        </div>
+    
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="dropdown active">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                New Game <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#" class="sudo-new" data-hints="60" data-toggle="collapse" data-target=".navbar-collapse"> <span class="glyphicon glyphicon-th"></span> Super Easy</a></li>
+                <li><a href="#" class="sudo-new" data-hints="45" data-toggle="collapse" data-target=".navbar-collapse"> <span class="glyphicon glyphicon-th"></span> Easy</a></li>
+                <li><a href="#" class="sudo-new" data-hints="33" data-toggle="collapse" data-target=".navbar-collapse"> <span class="glyphicon glyphicon-th"></span> Normal</a></li>
+                <li><a href="#" class="sudo-new" data-hints="25" data-toggle="collapse" data-target=".navbar-collapse"> <span class="glyphicon glyphicon-th"></span> Hard</a></li>
+                <li><a href="#" class="sudo-new" data-hints="20" data-toggle="collapse" data-target=".navbar-collapse"> <span class="glyphicon glyphicon-th"></span> Diabolical</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <span class="glyphicon glyphicon-tasks"></span> Settings <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li data-toggle="collapse" data-target=".navbar-collapse"><a href="#">
+                  Notify Unsolvable: <input type="checkbox" name="chk-unsolvable" class="bs-switch" data-size="mini" checked>
+                </a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    
+    <div id="sudoku"></div>
+  
+    <div id="sudo-message"></div>
+  
+    <div class="button-row">
+      <button type="button" class="btn btn-info btn-digit" data-digit="1">1</button>
+      <button type="button" class="btn btn-info btn-digit" data-digit="2">2</button>
+      <button type="button" class="btn btn-info btn-digit" data-digit="3">3</button>
+      <button type="button" class="btn btn-info btn-digit" data-digit="4">4</button>
+      <button type="button" class="btn btn-info btn-digit" data-digit="5">5</button>
+      <button type="button" class="btn btn-info btn-digit" data-digit="6">6</button>
+      <button type="button" class="btn btn-info btn-digit" data-digit="7">7</button>
+      <button type="button" class="btn btn-info btn-digit" data-digit="8">8</button>
+      <button type="button" class="btn btn-info btn-digit" data-digit="9">9</button>
+      <button type="button" class="btn btn-info btn-digit" data-digit="0">&nbsp;&nbsp;</button>
+      <!--
+      <button type="button" class="btn btn-warning" id="sudo-hint"> <span class="glyphicon glyphicon-asterisk"></span> hint</button>
+      <button type="button" class="btn btn-danger" id="sudo-solve"> <span class="glyphicon glyphicon-cog"></span> solve</button>
+      -->
+    </div>
+    <div class="button-row" style="display:none;">
+      <button type="button" class="btn btn-primary sudo-new" data-hints="45">New Easy</button>
+      <button type="button" class="btn btn-primary sudo-new" data-hints="30">New Normal</button>
+      <button type="button" class="btn btn-primary sudo-new" data-hints="25">New Hard</button>
+      <button type="button" class="btn btn-primary sudo-new" data-hints="20">New Diabolical</button>
+    </div>
+    <div class="button-row">
+      <button type="button" class="btn btn-warning" id="sudo-hint"> <span class="glyphicon glyphicon-asterisk"></span> hint</button>
+      <button type="button" class="btn btn-danger" id="sudo-solve"> <span class="glyphicon glyphicon-cog"></span> solve</button>
+    </div>
+    
+  </div>
+  
+  <script type="text/javascript" src="lib/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript" src="lib/bootstrap.min.js"></script>
+  <script type="text/javascript" src="lib/bootstrap-switch.min.js"></script>
+  <script type="text/javascript" src="sudoku.js"></script>
+  <script type="text/javascript" src="sudoku.solver.js"></script>
+  <script type="text/javascript">
+  	$(document).ready(function () {
+
+  		sudoku.initialize();
+      sudoku.startGame();
+  		sudoku.render();
+
+      $(".bs-switch").bootstrapSwitch()
+      .on('switchChange.bootstrapSwitch', function(event, state) {
+                //console.log(this); // DOM element
+                //console.log(event); // jQuery event
+                //console.log(state); // true | false
+        sudoku.unsolvableFlag = state;
+      });
+
+  		$("#sudo-hint").on("click", function () {
+  			sudoku.solver.putHint(sudoku.cells);
+        sudoku.render();
+  		});
+      
+      $("#sudo-solve").on("click", function () {
+  			var board = sudoku.cells;
+  			sudoku.solver.solvePuzzle(board);
+        sudoku.render();
+  		});
+
+      $(".sudo-new").on("click", function () {
+        var hints = $(this).data("hints");
+        hints = parseInt(hints);
+        sudoku.hintsCount = hints;
+        sudoku.startGame();
+        sudoku.render();
+      });
+
+      // fix navbar behavior to collapse on menu item click;
+      //$('.nav .dropdown-menu a').on('click', function(){
+      //    $(".navbar-toggle").click(); //bootstrap 3.x by Richard
+      //});
+
+  	});
+  </script>
+</body>
+</html>
