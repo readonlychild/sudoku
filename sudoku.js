@@ -104,6 +104,9 @@ sudoku.render = function () {
 
 			if (this.isCellLocked(i, j)) vcss += " locked";
 
+			if (i == 3 || i == 6) vcss += " big-top";
+			if (j == 3 || j == 6) vcss += " big-left";
+
 			htm += vcss;
 			htm += "' data-row='" + i + "' data-col='" + j + "'>" + (row[j] == 0 ? "&nbsp;" : row[j]) + "</td>";
 		}
@@ -268,3 +271,15 @@ sudoku.say = function (msg, cssClass) {
 	$(this.messageContainer).removeClass("showing");
 	$(this.messageContainer).html(msg).addClass(cssClass);
 };
+sudoku.serialize = function (blanks) {
+	blanks = blanks || ".";
+	var s = "";
+	for (var i = 0; i < this.cells.length; i++) {
+		for (var j = 0; j < this.cells[i].length; j++) {
+			var d = this.cells[i][j].toString();
+			if (d == "0") d = blanks;
+			s += d;
+		}
+	}
+	return s;
+}
