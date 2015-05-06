@@ -11,9 +11,11 @@
   <style>
   body, * { font-family:arial; }
   body { padding:60px 0 10px; }
+  #sudoku table { border-collapse:inherit; border-spacing:1; }
   #sudoku table td { border:1px solid #ccc; padding:4px; cursor:pointer; min-width:28px; height:32px; text-align:center; }
-  #sudoku table td.active { border:1px solid #f72; }
+  #sudoku table td.active { border:1px solid #f72; background:#fdb; }
   #sudoku table td.alt { background:#eee; }
+  #sudoku table td.alt.active { background:#fdb; }
   #sudoku table td.crosshair { border:1px solid #999; }
   #sudoku table td.ok { background:#cfc; }
   #sudoku table td.ng { background:#fcc; }
