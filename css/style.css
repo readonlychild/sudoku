@@ -1,0 +1,46 @@
+@font-face {
+  font-family: 'Rammetto One';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Rammetto One Regular'), local('RammettoOne-Regular'), url(../fonts/rammetto-one.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+body, * { font-family:arial; font-size:14px; }
+body { padding:60px 0 10px; }
+#sudoku table { /*border-collapse:inherit; border-spacing:1;*/ }
+#sudoku table td { border:1px solid #ddd; padding:4px; cursor:pointer; min-width:28px; height:32px; text-align:center; }
+#sudoku table td.active { background:#fdb; }
+#sudoku table td.alt { background:#eee; }
+#sudoku table td.alt.active { background:#fdb; }
+#sudoku table td.crosshair { background:#eef; }
+#sudoku table td.alt.crosshair { background:#dde; }
+#sudoku table td.ok { background:#cfc; }
+#sudoku table td.ng { background:#fcc; }
+#sudoku table td.block-ng { background:#fdd; }
+#sudoku table td.locked { font-weight:bold; color:#f00; }
+#sudoku table td.alt.block-ng { background:#fcc; }
+#sudo-message.showing { padding:8px; border:1px solid #ddd; text-align:center; font-weight:bold; background:#bce; }
+.button-row { padding: 2px; margin:2px; border:0px solid #ccc; text-align:center; }
+.sudo-grid { margin:0 auto; }
+
+#sudoku table td.big-top { border-top:2px solid #000; }
+#sudoku table td.big-left { border-left:2px solid #000; }
+
+
+@media (min-width: 320px) and (max-width: 720px) {
+/* code for tablets only */
+
+	#sudoku table td { font-family:arial; font-size:18px; padding:8px 10px; }
+
+}
+
+@media (min-width: 720px) {
+/* all other code if its not mobile or tablet */
+	
+	#sudoku table td { font-family:'Rammetto One',arial; font-size:20px; padding:8px 14px; min-width:45px; }
+  .btn { font-size:18px; }
+  #sudoku table td.locked { font-weight:normal; }
+
+}
+@import url(http://fonts.googleapis.com/css?family=Rammetto+One);

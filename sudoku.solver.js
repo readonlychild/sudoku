@@ -88,6 +88,10 @@ sudoku.solver.solvePuzzle = function(board, emptyPositions) {
     emptyPositions = this.saveEmptyPositions(board);
   }
   
+  if (emptyPositions.length == 0) {
+    return board;
+  }
+  
   // Variables to track our position in the solver
   var limit = 9,
       i, row, column, value, found;
@@ -131,6 +135,12 @@ sudoku.solver.solvePuzzle = function(board, emptyPositions) {
   return board;
 };
 sudoku.solver.putHint = function (board) {
+  
+  var emptyCells = this.saveEmptyPositions(board);
+  if (emptyCells.length == 0) {
+    return;
+  }
+  
   var clone = this._cloneBoard(board);
   this.solvePuzzle(clone);
   
@@ -192,6 +202,10 @@ sudoku.solver.generatePuzzle = function (hintCount) {
   for (var i = 0; i <= hintCount; i++) {
     var r = this._chooseDigit(rows);
     var c = this._chooseDigit(cols);
+    while (grid2[r][c] != 0) {
+      r = this._chooseDigit(rows);
+      c = this._chooseDigit(cols);
+    }
     grid2[r][c] = solved[r][c];
   }
 

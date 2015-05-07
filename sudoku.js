@@ -51,9 +51,7 @@ sudoku.initialize = function () {
 			instance.render();
 		}
 
-		//console.log(evt);
 		if (instance.isCellLocked(instance.currY, instance.currX)) {
-			//console.log('cell is locked');
 			return;
 		}
 
@@ -71,6 +69,9 @@ sudoku.initialize = function () {
 	
 	// BTN-DIGIT ACTION
 	$(document).on("click", ".btn-digit", function () {
+		if (instance.isCellLocked(instance.currY, instance.currX)) {
+			return;
+		}
 		var d = parseInt($(this).data("digit"));
 		instance.setValue(d);
 	});
