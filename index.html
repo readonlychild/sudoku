@@ -40,6 +40,8 @@
                 <li><a href="#" class="sudo-new" data-hints="33" data-toggle="collapse" data-target=".navbar-collapse"> <span class="glyphicon glyphicon-th"></span> Normal</a></li>
                 <li><a href="#" class="sudo-new" data-hints="25" data-toggle="collapse" data-target=".navbar-collapse"> <span class="glyphicon glyphicon-th"></span> Hard</a></li>
                 <li><a href="#" class="sudo-new" data-hints="20" data-toggle="collapse" data-target=".navbar-collapse"> <span class="glyphicon glyphicon-th"></span> Diabolical</a></li>
+                <li class="divider"></li>
+                <li><a href="#" class="sudo-creator" data-toggle="collapse" data-target=".navbar-collapse">Create your own (then solve)</a></li>
               </ul>
             </li>
           </ul>
@@ -98,11 +100,12 @@
   <script type="text/javascript" src="lib/bootstrap-switch.min.js"></script>
   <script type="text/javascript" src="sudoku.js"></script>
   <script type="text/javascript" src="sudoku.solver.js"></script>
+  <script type="text/javascript" src="sudoku.datasource.js"></script>
   <script type="text/javascript">
   	$(document).ready(function () {
 
   		sudoku.initialize();
-      sudoku.startGame();
+      //sudoku.startGame();
   		sudoku.render();
 
       FastClick.attach(document.body);
@@ -130,6 +133,12 @@
         var hints = $(this).data("hints");
         hints = parseInt(hints);
         sudoku.hintsCount = hints;
+        sudoku.startGame();
+        sudoku.render();
+      });
+      
+      $(".sudo-creator").on("click", function () {
+        sudoku.hintsCount = -1;
         sudoku.startGame();
         sudoku.render();
       });

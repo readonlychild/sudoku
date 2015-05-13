@@ -158,8 +158,7 @@ sudoku.solver.putHint = function (board) {
   
 };
 
-sudoku.solver.generatePuzzle = function (hintCount) {
-  hintCount = hintCount || 35;
+sudoku.solver._getNewGrid = function () {
   var grid = [];
   grid.push([0,0,0,0,0,0,0,0,0]);
   grid.push([0,0,0,0,0,0,0,0,0]);
@@ -170,6 +169,12 @@ sudoku.solver.generatePuzzle = function (hintCount) {
   grid.push([0,0,0,0,0,0,0,0,0]);
   grid.push([0,0,0,0,0,0,0,0,0]);
   grid.push([0,0,0,0,0,0,0,0,0]);
+  return grid;
+};
+
+sudoku.solver.generatePuzzle = function (hintCount) {
+  hintCount = hintCount || 35;
+  var grid = this._getNewGrid();
 
   var digs = [1,2,3,4,5,6,7,8,9];
   var cols = [0,1,2,3,4,5,6,7,8];
@@ -185,16 +190,7 @@ sudoku.solver.generatePuzzle = function (hintCount) {
   var emptys = this.saveEmptyPositions(grid);
   var solved = this.solvePuzzle(grid, emptys);
 
-  var grid2 = [];
-  grid2.push([0,0,0,0,0,0,0,0,0]);
-  grid2.push([0,0,0,0,0,0,0,0,0]);
-  grid2.push([0,0,0,0,0,0,0,0,0]);
-  grid2.push([0,0,0,0,0,0,0,0,0]);
-  grid2.push([0,0,0,0,0,0,0,0,0]);
-  grid2.push([0,0,0,0,0,0,0,0,0]);
-  grid2.push([0,0,0,0,0,0,0,0,0]);
-  grid2.push([0,0,0,0,0,0,0,0,0]);
-  grid2.push([0,0,0,0,0,0,0,0,0]);
+  var grid2 = this._getNewGrid();
 
   cols = [0,1,2,3,4,5,6,7,8];
   rows = [8,7,6,5,4,3,2,1,0];

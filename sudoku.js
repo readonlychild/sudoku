@@ -75,6 +75,14 @@ sudoku.initialize = function () {
 		var d = parseInt($(this).data("digit"));
 		instance.setValue(d);
 	});
+	
+	//restore saved or start new
+	var saved = this.datasource.get("current-game");
+	if (saved) {
+		this.hidrate(saved);
+	} else {
+		this.startGame();
+	}
 
 };
 
@@ -134,6 +142,7 @@ sudoku.render = function () {
 	} else {
 		this.say("");
 	}
+	this.save();
 };
 sudoku._altcell = function (i, j) {
 	if (i < 3 || i > 5) {
@@ -241,20 +250,17 @@ sudoku._getBlockValidity = function () {
 
 sudoku.startGame = function (hintCount) {
 	hintCount = hintCount || this.hintsCount;
+	if (hintCount == -1) {
+		grid = this.solver._getNewGrid();
+		this.gridlock = this.solver._getNewGrid();
+		this.cells = grid;
+		return;
+	}
 
 	var grid = this.solver.generatePuzzle(hintCount);
 
 	// build gridlock
-	var gridl = [];
-	gridl.push([0,0,0,0,0,0,0,0,0]);
-	gridl.push([0,0,0,0,0,0,0,0,0]);
-	gridl.push([0,0,0,0,0,0,0,0,0]);
-	gridl.push([0,0,0,0,0,0,0,0,0]);
-	gridl.push([0,0,0,0,0,0,0,0,0]);
-	gridl.push([0,0,0,0,0,0,0,0,0]);
-	gridl.push([0,0,0,0,0,0,0,0,0]);
-	gridl.push([0,0,0,0,0,0,0,0,0]);
-	gridl.push([0,0,0,0,0,0,0,0,0]);
+	var gridl = this.solver._getNewGrid();
 
 	for (var i = 0; i < gridl.length; i++) {
 		for (var j = 0; j < gridl.length; j++) {
@@ -264,6 +270,10 @@ sudoku.startGame = function (hintCount) {
 	this.gridlock = gridl;
 	this.cells = grid;
 	this._getBlockValidity();
+	
+	this.datasource.save(this.serialize(), "current-game-initial");
+	this.datasource.save(this.serialize(), "current-game");
+	
 	return grid;
 };
 
@@ -283,4 +293,50 @@ sudoku.serialize = function (blanks) {
 		}
 	}
 	return s;
-}
+};
+sudoku.hidrate = function () {
+	
+	var initialState = this.datasource.get("current-game-initial");
+	var initialGrid = this.solver._getNewGrid();
+	
+	var idx = 0;
+	for (var i = 0; i < 9; i++) {
+		for (var j = 0; j < 9; j++) {
+			var d = initialState.substring(idx, idx+1);
+			if (d == ".") d = "0";
+			d = parseInt(d);
+			initialGrid[i][j] = d;
+			idx += 1;
+		}
+	}
+	
+	// build gridlock
+	var gridl = this.solver._getNewGrid();
+
+	for (var i = 0; i < gridl.length; i++) {
+		for (var j = 0; j < gridl.length; j++) {
+			if (initialGrid[i][j] > 0) gridl[i][j] = 1;
+		}
+	}
+	this.gridlock = gridl;
+	
+	var currentState = this.datasource.get("current-game");
+	var grid = this.solver._getNewGrid();
+	
+	idx = 0;
+	for (var i = 0; i < 9; i++) {
+		for (var j = 0; j < 9; j++) {
+			var d = currentState.substring(idx, idx+1);
+			if (d == ".") d = "0";
+			d = parseInt(d);
+			grid[i][j] = d;
+			idx += 1;
+		}
+	}
+	
+	this.cells = grid;
+	
+};
+sudoku.save = function () {
+	this.datasource.save(this.serialize(), "current-game");
+};
