@@ -124,7 +124,11 @@
   		});
       
       $("#sudo-solve").on("click", function () {
-  			var board = sudoku.cells;
+  			if (!sudoku.solver.isSolvable(sudoku.cells)) {
+          sudoku.say("Not solvable anymore.", "error");
+          return;
+        }
+        var board = sudoku.cells;
   			sudoku.solver.solvePuzzle(board);
         sudoku.render();
   		});

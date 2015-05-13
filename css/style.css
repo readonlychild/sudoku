@@ -20,7 +20,8 @@ body { padding:60px 0 10px; }
 #sudoku table td.block-ng { background:#fdd; }
 #sudoku table td.locked { font-weight:bold; color:#f00; }
 #sudoku table td.alt.block-ng { background:#fcc; }
-#sudo-message.showing { padding:8px; border:1px solid #ddd; text-align:center; font-weight:bold; background:#bce; }
+#sudo-message .showing { padding:8px; border:1px solid #ddd; text-align:center; font-weight:bold; background:#bce; }
+#sudo-message .error   { padding:8px; border:1px solid #f00; text-align:center; font-weight:bold; background:#fdd; }
 .button-row { padding: 2px; margin:2px; border:0px solid #ccc; text-align:center; }
 .sudo-grid { margin:0 auto; }
 

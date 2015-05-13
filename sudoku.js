@@ -89,6 +89,8 @@ sudoku.initialize = function () {
 sudoku.render = function () {
 	this._getBlockValidity();
 
+	this.say("");
+
 	var allfilled = true;
 	var allvalids = true;
 
@@ -133,14 +135,15 @@ sudoku.render = function () {
 	if (this.unsolvableFlag) {
 		var stillsolvable = this.solver.isSolvable(this.cells);
 		htm += "<td class='" + (stillsolvable ? "ok" : "ng") + "'>&nbsp;</td>";
+		if (!stillsolvable) {
+			this.say("Not solvable anymore...", "error");
+		}
 	}
 	htm += "</tr>";
 	htm += "</table>";
 	$(this.container).html(htm);
 	if (allvalids && allfilled) {
 		this.say("you are a winner!", "showing");
-	} else {
-		this.say("");
 	}
 	this.save();
 };
@@ -279,8 +282,9 @@ sudoku.startGame = function (hintCount) {
 
 sudoku.say = function (msg, cssClass) {
 	cssClass = cssClass || "";
-	$(this.messageContainer).removeClass("showing");
-	$(this.messageContainer).html(msg).addClass(cssClass);
+	msg = "<div class='" + cssClass + "'>" + msg + "</div>";
+	$(this.messageContainer);
+	$(this.messageContainer).html(msg);
 };
 sudoku.serialize = function (blanks) {
 	blanks = blanks || ".";
